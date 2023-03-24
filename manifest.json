@@ -1,6 +1,6 @@
 {
-  "name": "Youtube Subscriptions Transfer",
-  "description": "Transferring subscriptions from one YouTube account to another",
+  "name": "BLC Auto Login",
+  "description": "Auto login BLC",
   "version": "1.0",
   "manifest_version": 3,
   "icons": {
@@ -11,7 +11,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://www.youtube.com/*"],
+      "matches": ["https://elearn.daffodilvarsity.edu.bd/*"],
       "js": ["src/content/index.ts"]
     }
   ],

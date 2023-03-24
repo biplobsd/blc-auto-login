@@ -1,24 +1,16 @@
 
-type ActionType = 'option' | 'content' | 'status' | 'none' | 'save';
-type StatusCode = 'loading' | 'collecting' | 'subscribe' | 'unsubscribe' | 'changepage' | 'error' | 'stop' | 'ready';
-
-type Data = {
-    status?: { msg: string, code: StatusCode },
-    channelPaths?: string[]
-}
-
 export type IStorage = {
     context: {
-        actionType: ActionType;
-        data?: Data
+        isAutoLoginOn: boolean
+        userName?: string
+        password?: string
     }
 
 };
 
 const defaultStorage: IStorage = {
     context: {
-        actionType: 'none',
-        data: {}
+        isAutoLoginOn: false
     }
 
 };

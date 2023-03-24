@@ -10,19 +10,24 @@ export async function delay(ms: number) {
 }
 
 export async function isRightSite(isOptions = true) {
-    let url: string;
-    if (isOptions) {
-        const tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-        url = tabs[0].url;
-    } else {
-        url = window.location.href;
-    }
+    try {
+        let url: string;
+        if (isOptions) {
+            const tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+            url = tabs[0].url;
+        } else {
+            url = window.location.href;
+        }
 
-    if (url.length === 0) {
+        if (url.length === 0) {
+            return false;
+        }
+
+        return SELECTED_URLS.includes(url.slice(0, 24));
+    } catch (e) {
+        console.log(e);
         return false;
     }
-
-    return SELECTED_URLS.includes(url.slice(0, 24));
 }
 
 export function getXpathFromElement(xpath: string) {

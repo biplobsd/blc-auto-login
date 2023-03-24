@@ -6,12 +6,7 @@ const target = document.getElementById("app");
 function render() {
     storage.get().then((data) => {
         new Options({
-            target, props: {
-                channelPaths:
-                    data.context.data
-                        ? data.context.data.channelPaths ?? []
-                        : []
-            }
+            target, props: { data }
         });
     });
 }
