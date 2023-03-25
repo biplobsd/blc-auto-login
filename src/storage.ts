@@ -8,7 +8,7 @@ export type IStorage = {
 
 };
 
-const defaultStorage: IStorage = {
+export const DEFAULT_STORAGE: IStorage = {
     context: {
         isAutoLoginOn: false
     }
@@ -30,12 +30,12 @@ interface RuntimeModel {
 
 export const storage: StorageModel = {
     get: (): Promise<IStorage> =>
-        chrome.storage.local.get(defaultStorage) as Promise<IStorage>,
+        chrome.storage.local.get(DEFAULT_STORAGE) as Promise<IStorage>,
     set: (value: IStorage): Promise<void> => chrome.storage.local.set(value),
     addListener: (change: (change: IStorage) => void) => {
         const handleStorageChanges = function (changes, namespace) {
-            const m = defaultStorage;
-            for (let key in defaultStorage) {
+            const m = DEFAULT_STORAGE;
+            for (let key in DEFAULT_STORAGE) {
                 m[key] = changes[key].newValue;
             }
             change(m);

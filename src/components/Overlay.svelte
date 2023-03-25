@@ -88,7 +88,7 @@
 
   async function tryAutoLogin() {
     data = await storage.get();
-    await delay(500);
+    await delay(10);
     console.log("Checking.. blc-auto-login");
     if (await checkingIsDoAttemp()) {
       console.log("Attemp login..");
