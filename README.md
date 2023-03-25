@@ -2,7 +2,7 @@
 
 ![logo](/src/assets/icons/icon128.png)
 
-BLC auto login extention.
+Automatically log in to the BLC website without manually entering your username and password.
 
 ![Preview](https://user-images.githubusercontent.com/43641536/227714912-f2fb693d-8b4d-4f26-8013-15a9eddb2203.gif)
 
