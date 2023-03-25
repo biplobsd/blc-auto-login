@@ -1,6 +1,6 @@
 {
   "name": "BLC Auto Login",
-  "description": "Auto login BLC",
+  "description": "Automatically log in to the BLC website without manually entering your username and password.",
   "version": "1.0",
   "manifest_version": 3,
   "icons": {
