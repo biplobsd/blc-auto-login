@@ -4,6 +4,9 @@
 
 BLC auto login extention.
 
+![Preview](https://user-images.githubusercontent.com/43641536/227714912-f2fb693d-8b4d-4f26-8013-15a9eddb2203.gif)
+
+
 ## Installation
 
 Get the built zip from the [release](https://github.com/biplobsd/blc-auto-login/releases/latest) tab. Then follow the instructions in the [Load unpacked extensions](#load-unpacked-extensions) section. The **_/dist_** folder should be considered as the unpacked zip files.
