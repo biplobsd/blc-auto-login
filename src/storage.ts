@@ -1,4 +1,33 @@
 
+
+type ActionType = 'option' | 'content' | 'status' | 'none';
+type StatusCode = 'loading' | 'markAsDone' | 'isAvaMarkAsDone' | 'error' | 'stop' | 'ready';
+
+export interface MarkAsDoneModel {
+    status: boolean, done: boolean, count: number
+}
+
+type Data = {
+    status?: { msg: string, code: StatusCode },
+    markAsDone?: MarkAsDoneModel
+}
+
+export type IStorageRT = {
+    context: {
+        actionType: ActionType;
+        data?: Data
+    }
+
+};
+
+const defaultStorageRT: IStorageRT = {
+    context: {
+        actionType: 'none',
+        data: {}
+    }
+
+};
+
 export type IStorage = {
     context: {
         isAutoLoginOn: boolean
@@ -23,9 +52,9 @@ interface StorageModel {
 
 interface RuntimeModel {
     fromOption: boolean;
-    selfParseData?: (dataLocal: IStorage) => void,
-    send: (value: IStorage) => Promise<void>;
-    addListener: (change: (change: IStorage) => void) => () => void;
+    selfParseData?: (dataLocal: IStorageRT) => void,
+    send: (value: IStorageRT) => Promise<void>;
+    addListener: (change: (change: IStorageRT) => void) => () => void;
 }
 
 export const storage: StorageModel = {
@@ -49,7 +78,7 @@ export const storage: StorageModel = {
 
 export const runtime: RuntimeModel = {
     fromOption: false,
-    send: function (value: IStorage): Promise<void> {
+    send: function (value: IStorageRT): Promise<void> {
         if (this.selfParseData) {
             this.selfParseData(value);
         }
@@ -63,8 +92,8 @@ export const runtime: RuntimeModel = {
         }
         return chrome.runtime.sendMessage(value);
     },
-    addListener: (change: (change: IStorage) => void) => {
-        const handleStorageChanges = function (message: IStorage, sender, sendResponse) {
+    addListener: (change: (change: IStorageRT) => void) => {
+        const handleStorageChanges = function (message: IStorageRT, sender, sendResponse) {
             change(message);
         };
         chrome.runtime.onMessage.addListener(handleStorageChanges);

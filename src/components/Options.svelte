@@ -7,6 +7,7 @@
   import Header from "./Header.svelte";
   import { fade, crossfade, blur } from "svelte/transition";
   import About from "./pages/About.svelte";
+  import Tools from "./pages/Tools.svelte";
   export let data: IStorage;
   let tabName: TabName = "auto blc";
 </script>
@@ -22,11 +23,11 @@
         class="tab tab-lifted {tabName === 'auto blc' && 'tab-active'}"
         >Auto login</button
       >
-      <!-- <button
+      <button
         on:click={() => (tabName = "tools")}
         class="tab tab-lifted {tabName === 'tools' && 'tab-active'}"
         >Tools</button
-      > -->
+      >
       <button
         on:click={() => (tabName = "about")}
         class="tab tab-lifted {tabName === 'about' && 'tab-active'}"
@@ -36,9 +37,9 @@
     {#if tabName === "auto blc"}
       <div><AutoLogin {data} /></div>
     {/if}
-    <!-- {#if tabName === "tools"}
-      <div>Tools</div>
-    {/if} -->
+    {#if tabName === "tools"}
+      <div><Tools /></div>
+    {/if}
     {#if tabName === "about"}
       <div><About /></div>
     {/if}

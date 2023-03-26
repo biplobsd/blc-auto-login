@@ -1,16 +1,34 @@
 <script lang="ts">
-  import { storage, type IStorage } from "src/storage";
-  import { delay, getXpathFromElement, isRightSite } from "src/utils/helper";
+  import {
+    runtime,
+    storage,
+    type IStorage,
+    type IStorageRT,
+    type MarkAsDoneModel,
+  } from "src/storage";
+  import {
+    delay,
+    getXpathFromElement,
+    getXpathFromElements,
+    isRightSite,
+  } from "src/utils/helper";
   import {
     FORM_LOGIN_BUTTON,
     INPUT_PASSWORD_FIELD,
     INPUT_USERNAME_FIELD,
+    LOADING_MARK_AS_DONE_BUTTON,
+    LOADING_UNMARK_AS_DONE_BUTTON,
     LOGIN_BUTTON,
+    MARK_AS_DONE_BUTTON,
+    UNMARK_AS_DONE_BUTTON,
     USERNAME,
   } from "src/utils/xpaths";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
 
   let data: IStorage;
+  let isLoading = false;
+  let isStop = false;
+  let storageRemoveListener: () => void;
 
   async function checkingIsDoAttemp() {
     console.log("data", data);
@@ -98,5 +116,206 @@
     }
   }
 
-  onMount(tryAutoLogin);
+  async function checkIsAvaMarkAsDone() {
+    if (isLoading) {
+      return;
+    }
+    isLoading = true;
+    try {
+      const markAsDoneButtons = getXpathFromElements(MARK_AS_DONE_BUTTON);
+      if (markAsDoneButtons) {
+        await sendDataMarkAsDone({
+          count: markAsDoneButtons.length,
+          done: true,
+          status: true,
+        });
+        return;
+      }
+
+      const unMarkAsDoneButtons = getXpathFromElements(UNMARK_AS_DONE_BUTTON);
+      if (unMarkAsDoneButtons) {
+        await sendDataMarkAsDone({
+          count: unMarkAsDoneButtons.length,
+          done: false,
+          status: true,
+        });
+        return;
+      }
+
+      await sendDataMarkAsDone();
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  async function markAsDone() {
+    if (isLoading) {
+      return;
+    }
+    isLoading = true;
+
+    await loadingSignalSend();
+
+    try {
+      let markAsDoneButtons = getXpathFromElements(MARK_AS_DONE_BUTTON);
+      if (markAsDoneButtons) {
+        for (let x of markAsDoneButtons) {
+          x.click();
+        }
+        await delay(50);
+
+        for (let index = 0; index < 60; index++) {
+          if (!getXpathFromElement(LOADING_MARK_AS_DONE_BUTTON)) {
+            break;
+          }
+          await delay(100);
+        }
+
+        const unMarkAsDoneButtons = getXpathFromElements(UNMARK_AS_DONE_BUTTON);
+        await sendDataMarkAsDone({
+          count: unMarkAsDoneButtons.length,
+          done: false,
+          status: true,
+        });
+        return;
+      }
+
+      let unMarkAsDoneButtons = getXpathFromElements(UNMARK_AS_DONE_BUTTON);
+      if (unMarkAsDoneButtons) {
+        for (let x of unMarkAsDoneButtons) {
+          x.click();
+        }
+        await delay(50);
+
+        for (let index = 0; index < 60; index++) {
+          if (!getXpathFromElement(LOADING_UNMARK_AS_DONE_BUTTON)) {
+            break;
+          }
+          await delay(100);
+        }
+
+        const markAsDoneButtons = getXpathFromElements(MARK_AS_DONE_BUTTON);
+        await sendDataMarkAsDone({
+          count: markAsDoneButtons.length,
+          done: true,
+          status: true,
+        });
+        return;
+      }
+
+      await sendDataMarkAsDone();
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  async function sendDataMarkAsDone(
+    markAsDone: MarkAsDoneModel = {
+      count: 0,
+      done: true,
+      status: false,
+    }
+  ) {
+    await runtime.send({
+      context: {
+        actionType: "option",
+        data: {
+          status: {
+            msg: "Mark as button info",
+            code: "isAvaMarkAsDone",
+          },
+          markAsDone,
+        },
+      },
+    });
+  }
+
+  function parseData(dataLocal: IStorageRT) {
+    if (dataLocal.context.actionType === "status") {
+      switch (dataLocal.context.data.status.code) {
+        case "loading":
+          isLoading = true;
+          break;
+        case "stop":
+          isLoading = false;
+          isStop = false;
+          break;
+        case "error":
+          isLoading = false;
+          isStop = false;
+          break;
+        case "isAvaMarkAsDone":
+          checkIsAvaMarkAsDone();
+          break;
+        case "markAsDone":
+          markAsDone();
+          break;
+        default:
+          break;
+      }
+    } else if (dataLocal.context.actionType === "content") {
+      if (dataLocal.context.data.status) {
+        switch (dataLocal.context.data.status.code) {
+          case "stop":
+            isStop = true;
+            break;
+          case "ready":
+            if (isLoading) {
+              loadingSignalSend();
+            } else {
+              readySignalSend();
+            }
+            break;
+          default:
+            break;
+        }
+      } else {
+        console.log("data", "Unsupported type");
+      }
+    } else {
+      console.log("Unsupported type");
+    }
+  }
+
+  async function readySignalSend() {
+    // Ready signal
+    await runtime.send({
+      context: {
+        actionType: "status",
+        data: {
+          status: {
+            msg: "Ready for accept request",
+            code: "ready",
+          },
+        },
+      },
+    });
+  }
+
+  async function loadingSignalSend() {
+    await runtime.send({
+      context: {
+        actionType: "status",
+        data: {
+          status: {
+            msg: "Working start",
+            code: "loading",
+          },
+        },
+      },
+    });
+  }
+
+  onMount(() => {
+    runtime.selfParseData = parseData;
+    storageRemoveListener = runtime.addListener(parseData);
+
+    readySignalSend();
+    tryAutoLogin();
+  });
+
+  onDestroy(() => {
+    runtime.send({ context: { actionType: "none" } });
+    storageRemoveListener();
+  });
 </script>
