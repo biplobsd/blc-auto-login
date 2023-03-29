@@ -8,8 +8,11 @@ Automatically log in to the BLC website without manually entering your username 
 
 
 ## Installation
+<a href="https://microsoftedge.microsoft.com/addons/detail/cklmpfnelcdadbpoonlejongcfmkngjj">
+  <img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Get YST on Microsoft Edge" width="224px">
+</a>
 
-Get the built zip from the [release](https://github.com/biplobsd/blc-auto-login/releases/latest) tab. Then follow the instructions in the [Load unpacked extensions](#load-unpacked-extensions) section. The **_/dist_** folder should be considered as the unpacked zip files.
+Or get the built zip from the [release](https://github.com/biplobsd/blc-auto-login/releases/latest) tab. Then follow the instructions in the [Load unpacked extensions](#load-unpacked-extensions) section. The **_/dist_** folder should be considered as the unpacked zip files.
 
 ## Usages
 To get started, simply click the toggle button to turn it on - <br>
