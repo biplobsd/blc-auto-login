@@ -12,6 +12,7 @@
     getXpathFromElements,
     isRightSite,
   } from "src/utils/helper";
+  import log from "src/utils/logger";
   import {
     FORM_LOGIN_BUTTON,
     INPUT_PASSWORD_FIELD,
@@ -31,7 +32,7 @@
   let storageRemoveListener: () => void;
 
   async function checkingIsDoAttemp() {
-    console.log("data", data);
+    log.info("data", data);
     if (
       !data.context.isAutoLoginOn ||
       (data.context.isAutoLoginOn &&
@@ -41,12 +42,12 @@
     }
 
     if (!(await isRightSite(false))) {
-      console.log("is not Right site");
+      log.info("is not Right site");
       return false;
     }
 
     if (checkIsLogin()) {
-      console.log("Already logged");
+      log.info("Already logged");
       return false;
     }
 
@@ -107,11 +108,11 @@
   async function tryAutoLogin() {
     data = await storage.get();
     await delay(10);
-    console.log("Checking.. blc-auto-login");
+    log.info("Checking.. blc-auto-login");
     if (await checkingIsDoAttemp()) {
-      console.log("Attemp login..");
+      log.info("Attemp login..");
       if (autoLogin()) {
-        console.log("Done");
+        log.info("Done");
       }
     }
   }
@@ -270,10 +271,10 @@
             break;
         }
       } else {
-        console.log("data", "Unsupported type");
+        log.info("data", "Unsupported type");
       }
     } else {
-      console.log("Unsupported type");
+      log.info("Unsupported type");
     }
   }
 

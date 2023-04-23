@@ -1,4 +1,5 @@
 import { STORIES_URL as SELECTED_URLS } from "./constants";
+import log from "./logger";
 
 export function isXPathExpressionExists(expression: string): boolean {
   const result = document.evaluate(
@@ -30,14 +31,9 @@ export async function isRightSite(isOptions = true) {
     if (url.length === 0) {
       return false;
     }
-    console.log(
-      url,
-      SELECTED_URLS,
-      SELECTED_URLS.includes(url.slice(0, SELECTED_URLS[0].length))
-    );
     return SELECTED_URLS.includes(url.slice(0, SELECTED_URLS[0].length));
   } catch (e) {
-    console.log(e);
+    log.error(e);
     return false;
   }
 }

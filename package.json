@@ -17,6 +17,8 @@
     "@tsconfig/svelte": "3.0.0",
     "@types/chrome": "0.0.200",
     "autoprefixer": "^10.4.13",
+    "pino": "^8.11.0",
+    "pino-pretty": "^10.0.0",
     "postcss": "^8.4.21",
     "svelte": "3.52.0",
     "svelte-check": "2.9.2",

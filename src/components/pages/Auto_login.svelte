@@ -1,5 +1,6 @@
 <script lang="ts">
   import { DEFAULT_STORAGE, storage, type IStorage } from "src/storage";
+  import log from "src/utils/logger";
   import { Icon, InformationCircle, ArrowPath } from "svelte-hero-icons";
 
   export let data: IStorage;
@@ -30,7 +31,7 @@
   ) {
     e.preventDefault();
 
-    console.log("Saveing account");
+    log.info("Saveing account");
     try {
       loading = true;
       await storage.set(data);

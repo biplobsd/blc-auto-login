@@ -3,6 +3,7 @@
   import { onDestroy, onMount } from "svelte";
   import MarkAsDone from "../Mark_as_done.svelte";
   import { isRightSite } from "src/utils/helper";
+  import log from "src/utils/logger";
 
   let isLoading = false;
   let isReady = false;
@@ -54,8 +55,8 @@
   }
 
   function parseData(dataLocal: IStorageRT) {
-    console.log(dataLocal);
-    console.log("ready", isReady);
+    log.info(dataLocal);
+    log.info("ready", isReady);
     setStatus("...");
     if (dataLocal.context.actionType === "status") {
       const msg = dataLocal.context.data.status.msg;
@@ -78,7 +79,7 @@
           isReady = true;
           return;
         default:
-          console.log(dataLocal);
+          log.info(dataLocal);
           setStatus("Error unsupported status code", true);
           return;
       }
@@ -89,7 +90,7 @@
           break;
       }
       isLoading = false;
-      console.log(dataLocal);
+      log.info(dataLocal);
     }
   }
 
@@ -119,7 +120,7 @@
 
   onMount(async () => {
     if (!(await isRightSite())) {
-      console.log("is not Right site");
+      log.info("is not Right site");
       isDisable = true;
       return;
     }

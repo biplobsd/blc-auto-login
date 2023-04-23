@@ -5,7 +5,6 @@
   import AutoLogin from "./pages/Auto_login.svelte";
   import Footer from "./Footer.svelte";
   import Header from "./Header.svelte";
-  import { fade, crossfade, blur } from "svelte/transition";
   import About from "./pages/About.svelte";
   import Tools from "./pages/Tools.svelte";
   export let data: IStorage;
