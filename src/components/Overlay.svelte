@@ -217,18 +217,22 @@
       status: false,
     }
   ) {
-    await runtime.send({
-      context: {
-        actionType: "option",
-        data: {
-          status: {
-            msg: "Mark as button info",
-            code: "isAvaMarkAsDone",
+    try {
+      await runtime.send({
+        context: {
+          actionType: "option",
+          data: {
+            status: {
+              msg: "Mark as button info",
+              code: "isAvaMarkAsDone",
+            },
+            markAsDone,
           },
-          markAsDone,
         },
-      },
-    });
+      });
+    } catch (e) {
+      log.error(e);
+    }
   }
 
   function parseData(dataLocal: IStorageRT) {
@@ -280,31 +284,39 @@
 
   async function readySignalSend() {
     // Ready signal
-    await runtime.send({
-      context: {
-        actionType: "status",
-        data: {
-          status: {
-            msg: "Ready for accept request",
-            code: "ready",
+    try {
+      await runtime.send({
+        context: {
+          actionType: "status",
+          data: {
+            status: {
+              msg: "Ready for accept request",
+              code: "ready",
+            },
           },
         },
-      },
-    });
+      });
+    } catch (e) {
+      log.error(e);
+    }
   }
 
   async function loadingSignalSend() {
-    await runtime.send({
-      context: {
-        actionType: "status",
-        data: {
-          status: {
-            msg: "Working start",
-            code: "loading",
+    try {
+      await runtime.send({
+        context: {
+          actionType: "status",
+          data: {
+            status: {
+              msg: "Working start",
+              code: "loading",
+            },
           },
         },
-      },
-    });
+      });
+    } catch (e) {
+      log.error(e);
+    }
   }
 
   onMount(() => {
@@ -316,7 +328,11 @@
   });
 
   onDestroy(() => {
-    runtime.send({ context: { actionType: "none" } });
+    try {
+      runtime.send({ context: { actionType: "none" } });
+    } catch (e) {
+      log.error(e);
+    }
     storageRemoveListener();
   });
 </script>

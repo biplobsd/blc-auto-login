@@ -17,6 +17,8 @@
     loading = true;
     try {
       await storage.set(data);
+    } catch (e) {
+      log.error(e);
     } finally {
       loading = false;
     }
@@ -36,6 +38,8 @@
       loading = true;
       await storage.set(data);
       msg = "Saved account credensial";
+    } catch (e) {
+      log.error(e);
     } finally {
       loading = false;
     }
@@ -47,6 +51,8 @@
       await storage.set(DEFAULT_STORAGE);
       data = DEFAULT_STORAGE;
       msg = "Cleared account credensial";
+    } catch (e) {
+      log.error(e);
     } finally {
       loading = false;
     }

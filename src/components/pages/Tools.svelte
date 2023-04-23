@@ -27,31 +27,39 @@
   }
 
   async function sendMarkAsDone() {
-    await runtime.send({
-      context: {
-        actionType: "status",
-        data: {
-          status: {
-            msg: "Send signal mark as done",
-            code: "markAsDone",
+    try {
+      await runtime.send({
+        context: {
+          actionType: "status",
+          data: {
+            status: {
+              msg: "Send signal mark as done",
+              code: "markAsDone",
+            },
           },
         },
-      },
-    });
+      });
+    } catch (e) {
+      log.error(e);
+    }
   }
 
   async function sendCheckIsAvaMarkAsDone() {
-    await runtime.send({
-      context: {
-        actionType: "status",
-        data: {
-          status: {
-            msg: "Send signal mark as done",
-            code: "isAvaMarkAsDone",
+    try {
+      await runtime.send({
+        context: {
+          actionType: "status",
+          data: {
+            status: {
+              msg: "Send signal mark as done",
+              code: "isAvaMarkAsDone",
+            },
           },
         },
-      },
-    });
+      });
+    } catch (e) {
+      log.error(e);
+    }
   }
 
   function parseData(dataLocal: IStorageRT) {
@@ -96,17 +104,21 @@
 
   async function readySignalSend() {
     // Ready signal
-    await runtime.send({
-      context: {
-        actionType: "content",
-        data: {
-          status: {
-            msg: "Is content script ready",
-            code: "ready",
+    try {
+      await runtime.send({
+        context: {
+          actionType: "content",
+          data: {
+            status: {
+              msg: "Is content script ready",
+              code: "ready",
+            },
           },
         },
-      },
-    });
+      });
+    } catch (e) {
+      log.error(e);
+    }
   }
 
   async function initialConnection() {
