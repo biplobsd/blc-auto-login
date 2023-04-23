@@ -18,7 +18,7 @@
       class="link link-hover"
       target="_blank"
       rel="noreferrer"
-      href="https://github.com/biplobsd">Developed by Biplob Sutradhar</a
+      href="https://biplobsd.github.io">Developed by Biplob Sutradhar</a
     >
   </p>
 </div>
