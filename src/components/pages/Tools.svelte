@@ -2,9 +2,11 @@
   import { runtime, type IStorageRT, type MarkAsDoneModel } from "src/storage";
   import { onDestroy, onMount } from "svelte";
   import MarkAsDone from "../Mark_as_done.svelte";
+  import { isRightSite } from "src/utils/helper";
 
   let isLoading = false;
   let isReady = false;
+  let isDisable = false;
   let isAvaMarkAsDone: MarkAsDoneModel = {
     status: false,
     done: false,
@@ -106,17 +108,28 @@
     });
   }
 
-  onMount(async () => {
+  async function initialConnection() {
     runtime.fromOption = true;
     runtime.selfParseData = parseData;
 
     storageRemoveListener = runtime.addListener(parseData);
 
     await readySignalSend();
+  }
+
+  onMount(async () => {
+    if (!(await isRightSite())) {
+      console.log("is not Right site");
+      isDisable = true;
+      return;
+    }
+    await initialConnection();
   });
 
   onDestroy(() => {
-    storageRemoveListener();
+    if (!isDisable) {
+      storageRemoveListener();
+    }
   });
 </script>
 
@@ -126,5 +139,6 @@
     bind:isAvaMarkAsDone
     onClick={sendMarkAsDone}
     bind:isReady
+    bind:isDisable
   />
 </div>

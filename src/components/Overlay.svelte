@@ -40,7 +40,7 @@
       return false;
     }
 
-    if (!isRightSite()) {
+    if (!(await isRightSite(false))) {
       console.log("is not Right site");
       return false;
     }
