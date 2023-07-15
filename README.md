@@ -8,9 +8,10 @@ Automatically log in to the BLC website without manually entering your username 
 
 
 ## Installation
-<a href="https://microsoftedge.microsoft.com/addons/detail/cklmpfnelcdadbpoonlejongcfmkngjj">
-  <img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Get YST on Microsoft Edge" width="224px">
-</a>
+
+| Edge Add-ons | Chrome Web Store |
+| ----------- | ----------- |
+| <a href="https://microsoftedge.microsoft.com/addons/detail/cklmpfnelcdadbpoonlejongcfmkngjj"><img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Get YST on Microsoft Edge" width="224px"></a> | <a href="https://chrome.google.com/webstore/detail/jfcbfdeolomalpheclmhggngjkocjjcb"><img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/HRs9MPufa1J1h5glNhut.png" alt="Get YST on Chrome Web Store" width="224px"></a> |
 
 Or get the built zip from the [release](https://github.com/biplobsd/blc-auto-login/releases/latest) tab. Then follow the instructions in the [Load unpacked extensions](#load-unpacked-extensions) section. The **_/dist_** folder should be considered as the unpacked zip files.
 
